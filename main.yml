@@ -1,0 +1,26 @@
+---
+- name: Ensure Sublime text 3 and Package controll packages
+  hosts: all
+  vars_files: vars/main.yml
+  roles:
+  - role: geerlingguy.homebrew
+    tags: ['brew']
+  tasks:
+  - name: ensure dirs exis
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+    loop:
+      - "{{ config_path }}/Packages/User"
+      - "{{ config_path }}/Installed Packages"
+    tags: ['config']
+  - name: create Sublime Text Control Package config
+    ansible.builtin.template:
+      src: templates/Package_Control.sublime-settings.j2
+      dest: "{{ config_path }}/Packages/User/Package Control.sublime-settings"
+    tags: ['config']
+  - name: ensure Package control is downloaded
+    ansible.builtin.get_url:
+      url: "https://packagecontrol.io/Package%20Control.sublime-package"
+      dest: "{{ config_path }}/Installed Packages/Package Control.sublime-package"
+    tags: ['config']
