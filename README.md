@@ -6,6 +6,8 @@ You will find a list of Sublime packages there.
 
 usage:
 install role requirements:
+```
 ansible-galaxy install -r roles/requirements.yml
 
 ansible-playbook main.yml
+```
